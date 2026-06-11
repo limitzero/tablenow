@@ -1,13 +1,13 @@
 ---
 name: create-spec
 description: >
-  Create a structured feature specification with self-contained task files organized into
-  parallel execution waves. Use this skill when the user says "create a spec", "plan this feature",
+  Create one more structured feature specifications with self-contained task files organized into
+  parallel execution phases from the 'stories.md' file. Use this skill when the user says "create a spec", "plan this feature",
   "write up an implementation plan", "break this into tasks", or after any planning conversation
   where the user wants to capture decisions as actionable spec files. Also use when the user
   says "/create-spec" or wants to decompose a feature into work items that agents can implement
   independently. This skill produces local spec files under specs/{feature}/ — no GitHub integration.
-argument-hint: 
+argument-hint: <path-to-stories-doocument>
 ---
 
 Input: `$ARGUMENTS`
@@ -30,7 +30,7 @@ The key insight: implementation plans that live in a single file are either too 
 
 ### Step 1: Examine extracted features from product plan 
 
-Examine the files found at the folder `.docs\features` for any markdown files in the directory, if there are not any files listed, prompt the user to run the skill `/create-feature` for creating the listing of features from an existing product plan and exit. 
+Examine the files found at the folder `.docs\features` for any markdown files in the directory, if there are not any files listed, prompt the user to run the skill `/create-specs` for creating the listing of features from an existing product plan and exit. 
 
 
 ### Step 2: Decompose the feature files
@@ -125,6 +125,10 @@ For each story found in `.docs/features`:
       2. Review the requirements and task files
       3. Use /implement-feature to start parallel implementation
       ```
+
+  9. Create listing of all tasks by feature and phase
+
+    There should be a markdown file named `implementation-plan.md` that is created in the directory `.docs\features` that lists all tasks separated by phases that a coder agent can look at and pick up work and mark as complete.
 
   ### Critical Rules
 
