@@ -35,9 +35,9 @@ Examine the files found at the folder `.docs\features` for any markdown files in
 
 ### Step 2: Decompose the feature files
 
-For each feature file found in `.docs/features`:
+For each story found in `.docs/features`:
 
-  1. Create a directory named `.docs/features/{feature-name}` if it does not exist
+  1. Create a directory named `.docs/features/{story-name}` if it does not exist, the `{story name}` should be in kebab-case with no special characters
 
   2. Break the implementation into atomic tasks. Each task should:
     - Be completable in a single coding session by one agent
