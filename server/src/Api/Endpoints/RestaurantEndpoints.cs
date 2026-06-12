@@ -23,6 +23,28 @@ public static class RestaurantEndpoints
             return TypedResultHelper.ToHttpResult(result);
         });
 
+        restaurants.MapGet("/{id:guid}/slots", async (
+            Guid id,
+            DateOnly? date,
+            int? partySize,
+            IMediator mediator,
+            CancellationToken ct) =>
+        {
+            var errors = new Dictionary<string, string[]>();
+            if (date is null)
+                errors["date"] = ["date is required and must be in yyyy-MM-dd format."];
+            if (partySize is null or <= 0)
+                errors["partySize"] = ["partySize must be a positive integer."];
+
+            if (errors.Count > 0)
+                return Results.ValidationProblem(errors);
+
+            var result = await mediator.Send(
+                RestaurantMapper.ToGetAvailableSlotsRequest(id, date!.Value, partySize!.Value),
+                ct);
+            return TypedResultHelper.ToHttpResult(result);
+        });
+
         return group;
     }
 }

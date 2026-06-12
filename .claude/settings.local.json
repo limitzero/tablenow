@@ -47,7 +47,8 @@
       "Bash(Sort-Object)",
       "Bash(git -C C:/repositories/github/tablenow status)",
       "Bash(git -C C:/repositories/github/tablenow log -5 --oneline)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(dotnet build *)"
     ]
   },
   "enableAllProjectMcpServers": true,

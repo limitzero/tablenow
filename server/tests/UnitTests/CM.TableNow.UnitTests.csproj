@@ -21,10 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="*" />
+    <PackageReference Include="NSubstitute" Version="*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Application\Auth\CM.TableNow.Auth.Application.csproj" />
     <ProjectReference Include="..\..\src\Domain\Auth\CM.TableNow.Auth.Domain.csproj" />
     <ProjectReference Include="..\..\src\Application\Restaurants\CM.TableNow.Restaurants.Application.csproj" />
     <ProjectReference Include="..\..\src\Domain\Restaurants\CM.TableNow.Restaurants.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Data\Restaurants\CM.TableNow.Restaurants.Data.csproj" />
     <ProjectReference Include="..\..\src\Application\Reservations\CM.TableNow.Reservations.Application.csproj" />
     <ProjectReference Include="..\..\src\Domain\Reservations\CM.TableNow.Reservations.Domain.csproj" />
   </ItemGroup>
