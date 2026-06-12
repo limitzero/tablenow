@@ -2,6 +2,11 @@
 bin/
 obj/
 
+# SQLite dev databases
+*.db
+*.db-shm
+*.db-wal
+
 # User secrets and local config
 appsettings.*.local.json
 secrets.json

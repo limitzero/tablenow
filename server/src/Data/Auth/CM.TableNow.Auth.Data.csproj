@@ -8,6 +8,8 @@
   <ItemGroup>
     <PackageReference Include="Mediator.Abstractions" Version="*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="*" />
   </ItemGroup>
 
   <PropertyGroup>
