@@ -32,8 +32,8 @@ graph TD
 ## Task Status
 
 ### Phase 1
-- [ ] [task-01-restaurant-data-queries](./tasks/task-01-restaurant-data-queries.md) — `GetRestaurantsQuery` / `GetRestaurantByIdQuery` + handlers
-- [ ] [task-02-restaurant-application](./tasks/task-02-restaurant-application.md) — `GetRestaurantsRequest` / `GetRestaurantByIdRequest` + handlers
+- [x] [task-01-restaurant-data-queries](./tasks/task-01-restaurant-data-queries.md) — `GetRestaurantsQuery` / `GetRestaurantByIdQuery` + handlers
+- [x] [task-02-restaurant-application](./tasks/task-02-restaurant-application.md) — `GetRestaurantsRequest` / `GetRestaurantByIdRequest` + handlers
 
 ### Phase 2
-- [ ] [task-03-restaurant-listing-endpoint](./tasks/task-03-restaurant-listing-endpoint.md) — `GET /api/restaurants` and `GET /api/restaurants/{id}` endpoints + `RestaurantMapper`
+- [x] [task-03-restaurant-listing-endpoint](./tasks/task-03-restaurant-listing-endpoint.md) — `GET /api/restaurants` and `GET /api/restaurants/{id}` endpoints + `RestaurantMapper`

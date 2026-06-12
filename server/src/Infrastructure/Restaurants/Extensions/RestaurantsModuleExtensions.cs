@@ -1,3 +1,5 @@
+using CM.TableNow.Restaurants.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +11,9 @@ public static class RestaurantsModuleExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // TODO(STORY-010/011): register Restaurants DbContext, handlers, query services.
+        services.AddDbContext<RestaurantsDbContext>(options =>
+            options.UseSqlite(configuration.GetConnectionString("Default")));
+
         return services;
     }
 }

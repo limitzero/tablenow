@@ -28,5 +28,5 @@ graph TD
 ## Task Status
 
 ### Phase 1
-- [ ] [task-01-auth-interceptor](./tasks/task-01-auth-interceptor.md) — HTTP interceptor: attach bearer header, handle 401
-- [ ] [task-02-auth-guard](./tasks/task-02-auth-guard.md) — Functional `canActivate` guard redirecting to `/login`
+- [x] [task-01-auth-interceptor](./tasks/task-01-auth-interceptor.md) — HTTP interceptor: attach bearer header, handle 401
+- [x] [task-02-auth-guard](./tasks/task-02-auth-guard.md) — Functional `canActivate` guard redirecting to `/login`

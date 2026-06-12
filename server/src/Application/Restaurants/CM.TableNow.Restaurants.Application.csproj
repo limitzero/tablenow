@@ -4,6 +4,7 @@
     <ProjectReference Include="..\..\Shared\CM.TableNow.Shared.csproj" />
     <ProjectReference Include="..\..\Domain\Restaurants\CM.TableNow.Restaurants.Domain.csproj" />
     <ProjectReference Include="..\..\Contracts\CM.TableNow.Contracts.csproj" />
+    <ProjectReference Include="..\..\Data\Restaurants\CM.TableNow.Restaurants.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

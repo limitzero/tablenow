@@ -40,7 +40,14 @@
       "Bash(Get-ChildItem -Recurse \"client/src/app/core/services\")",
       "Bash(Select-Object FullName)",
       "Bash(npx tsc *)",
-      "Bash(npx *)"
+      "Bash(npx *)",
+      "Bash(git commit *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\repositories\\\\github\\\\tablenow\\\\server\" -Recurse -Include \"*.cs\",\"*.csproj\")",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Bash(git -C C:/repositories/github/tablenow status)",
+      "Bash(git -C C:/repositories/github/tablenow log -5 --oneline)",
+      "Bash(git *)"
     ]
   },
   "enableAllProjectMcpServers": true,

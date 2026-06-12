@@ -1,3 +1,4 @@
+using CM.TableNow.Api.Endpoints;
 using CM.TableNow.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.RegisterServices(builder.Configuration);
 
 var app = builder.Build();
+
+var api = app.MapGroup("/api");
+api.MapRestaurantEndpoints();
 
 app.Run();
 
