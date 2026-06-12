@@ -1,6 +1,8 @@
+using CM.TableNow.Api.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// RegisterServices wired in task-03 (story-001) via builder.Services.RegisterServices(builder.Configuration);
+builder.Services.RegisterServices(builder.Configuration);
 
 var app = builder.Build();
 

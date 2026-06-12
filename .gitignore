@@ -1,0 +1,29 @@
+# Secrets & local config
+*.env
+.env
+.env.*
+secrets.json
+appsettings.*.local.json
+**/*.user
+
+# .NET build output
+bin/
+obj/
+
+# Rider / VS
+.idea/
+.vs/
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Node
+node_modules/
+
+# Angular build output
+client/dist/
+client/.angular/
+
+# OS
+.DS_Store
+Thumbs.db
