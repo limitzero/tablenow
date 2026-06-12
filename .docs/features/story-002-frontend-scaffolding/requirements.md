@@ -2,44 +2,53 @@
 
 ## Summary
 
-TableNow's frontend is an Angular 21 application using standalone components exclusively — no NgModules anywhere. The project must use `bootstrapApplication` from `@angular/platform-browser`, Angular Material for UI components with a custom color theme, and NgRx Signal Store for state management.
+TableNow's frontend is an Angular 21 single-page application built entirely with standalone components (no `NgModule`). Before feature work begins, the project needs a consistent foundation: a freshly initialized Angular workspace bootstrapped via `bootstrapApplication`, the required tooling (Angular Material with a custom theme, NgRx Signal Store for state, Vitest for unit tests, Playwright for e2e), and the feature-based folder structure (`core/`, `shared/`, `features/`) described in CLAUDE.md.
 
-The feature-based folder structure (`core/`, `shared/`, `features/`) must exist with `index.ts` barrel exports in every feature folder. This structure is the contract that all subsequent frontend stories follow. All components must use `OnPush` change detection and `inject()` for dependency injection.
+This story produces that scaffold under `./client`. It establishes the environment configuration (`environment.ts` with `apiBaseUrl` pointing at the backend), the custom Material theme, and the conventions every later frontend story relies on: `OnPush` change detection, `inject()` DI, `@if`/`@for` control flow, services-only API access, and `httpResource()`/async-pipe instead of manual `.subscribe()`.
+
+The expected outcome is that `npm run build` from `./client` succeeds with zero errors and that subsequent frontend stories can add feature folders without restructuring the workspace.
 
 ## Goals
 
-- Angular 21 project at `./client` using `bootstrapApplication` (no NgModule, no AppModule)
-- Angular Material with a custom theme configured in `styles.scss`
-- NgRx Signal Store installed and available
-- `core/`, `shared/`, `features/` directory structure under `src/app/`
-- `environment.ts` pointing to `http://localhost:5000/api` as `apiBaseUrl`
-- `npm run build` succeeds with zero errors
+- An Angular 21 workspace under `./client` bootstrapped with `bootstrapApplication` (no `AppModule`).
+- Dependencies installed: Angular Material, `@ngrx/signals`, Vitest, Playwright.
+- `npm` scripts: `test` (Vitest), `e2e` (Playwright), `lint` (ESLint), `build` (production build).
+- Folder structure under `src/app/`: `core/`, `shared/`, `features/`.
+- A custom Angular Material theme.
+- `environment.ts` defining `apiBaseUrl` = `http://localhost:5000/api`.
+- `npm run build` from `./client` succeeds with zero errors.
 
 ## Non-Goals
 
-- No actual feature components (STORY-008+)
-- No HTTP client setup (added per-feature)
-- No routing for specific features (added in STORY-008, STORY-012, etc.)
+- No auth, restaurant, or reservation feature components, routes, or stores (covered by STORY-008+).
+- No HTTP interceptor or route guard (covered by STORY-009).
+- No backend work (covered by STORY-001).
+- No production deployment configuration beyond the standard production build.
 
 ## Acceptance Criteria
 
-- [ ] `npm run build` from `./client` succeeds with zero errors
-- [ ] `bootstrapApplication` is used in `main.ts` (no AppModule)
-- [ ] `src/app/core/`, `src/app/shared/`, `src/app/features/` directories exist with `index.ts` barrels
-- [ ] `environment.ts` exports `apiBaseUrl: 'http://localhost:5000/api'`
-- [ ] Angular Material is imported and a custom theme is active in `styles.scss`
-- [ ] TypeScript strict mode is enabled
+- [ ] `npm run build` from `./client` succeeds with zero errors.
+- [ ] The project uses `bootstrapApplication` (there is no `AppModule`).
+- [ ] `src/app/` contains `core/`, `shared/`, and `features/` folders.
+- [ ] `environment.ts` defines `apiBaseUrl` = `http://localhost:5000/api`.
+- [ ] Angular Material is installed with a custom theme applied.
+- [ ] NgRx Signal Store (`@ngrx/signals`), Vitest, and Playwright are installed and wired to npm scripts.
 
 ## Assumptions
 
-- Node.js ≥ 20 and Angular CLI ≥ 21 are installed
-- The `client/` directory does not yet exist in the repository
+- Node.js (LTS compatible with Angular 21) and npm are installed.
+- The backend API will be reachable at `http://localhost:5000/api` during local development (matching STORY-001's host).
+- The Angular CLI used to scaffold supports standalone-only generation (Angular 21 default).
+- Vitest is used in place of the default Karma/Jasmine runner; the Angular build target remains the application builder.
 
 ## Technical Constraints
 
-- Standalone components only — `NgModule` is forbidden
-- `OnPush` change detection on every component, no exceptions
-- `inject()` for all DI — no constructor injection
-- `@if` / `@for` in templates — no `*ngIf` / `*ngFor`
-- No `.subscribe()` in components — use `httpResource()` or async pipe
-- NgRx Signal Store for state — one store slice per feature
+- Standalone components only — no `NgModule`. Bootstrap via `bootstrapApplication(AppComponent, appConfig)`.
+- Every component uses `ChangeDetectionStrategy.OnPush` — no exceptions.
+- State management: NgRx Signal Store, one store slice per feature.
+- DI via the `inject()` function — no constructor injection.
+- API access through services only, never directly in components.
+- Templates use `@if` / `@for` — never `*ngIf` / `*ngFor`.
+- Async data via `httpResource()` or the async pipe — no `.subscribe()` in components.
+- UI built with Angular Material using the custom theme.
+- Feature folders require a barrel `index.ts` export (per CLAUDE.md).

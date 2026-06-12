@@ -17,7 +17,22 @@
       "Bash(cat:*)",
       "PowerShell(if \\(!\\(Test-Path \"C:\\\\source\\\\_learning\\\\claude\\\\agentic-coding\\\\agentic-todoapp\\\\.docs\\\\features\"\\)\\) { New-Item -ItemType Directory -Path \"C:\\\\source\\\\_learning\\\\claude\\\\agentic-coding\\\\agentic-todoapp\\\\.docs\\\\features\" } else { Write-Output \"Directory already exists\" })",
       "Bash(git init *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(gh auth *)",
+      "Bash(gh repo *)",
+      "PowerShell(gh auth *)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(gh repo view --json nameWithOwner,owner -q '.nameWithOwner + \" \" + .owner.login')",
+      "PowerShell(& \"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" repo view --json nameWithOwner,owner -q '.nameWithOwner + \" \" + .owner.login')",
+      "PowerShell(& \"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" auth status)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(dotnet --version)",
+      "PowerShell(dotnet new sln *)",
+      "PowerShell(dotnet new web *)",
+      "PowerShell(dotnet new classlib *)",
+      "PowerShell(dotnet build *)",
+      "PowerShell(New-Item *)"
     ]
   },
   "enableAllProjectMcpServers": true,

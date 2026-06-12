@@ -2,49 +2,51 @@
 
 ## Summary
 
-TableNow's backend is a .NET 10 modular monolith following CQRS via the source-generated Mediator library. Before any feature work can begin the solution structure must exist with proper project isolation per business context (Auth, Restaurants, Reservations), cross-project references enforced by architecture rules, and all shared infrastructure types in place.
+TableNow's backend is a .NET 10 modular monolith using CQRS via the source-generated [Mediator](https://github.com/martinothamar/Mediator) library. Before any feature work can begin, the solution needs a consistent, ready-to-use project foundation: a solution file, layer projects (Api, Application, Domain, Data, Contracts, Shared, Infrastructure, Migrations), per-business-context class libraries (Auth, Restaurants, Reservations), and the two test projects (UnitTests, IntegrationTests).
 
-This story produces a compilable skeleton. Subsequent stories add the implementation content. The key deliverables are the `Result<T>` return type used by all handlers, the `TypedResultHelper` that maps results to HTTP responses at Minimal API endpoints, and the module self-registration pattern that keeps the Api project thin.
+This story produces that scaffold. It establishes the folder layout from `.docs/design/backend/backend-project-structure.md`, the cross-cutting `Result<T>` type that every handler returns, and the module-registration mechanism (`Add[Context]Module()`) wired through `ServiceCollectionExtensions.RegisterServices()`. Configuration files (`appsettings.json` with `Jwt` and `ConnectionStrings` sections) are created with placeholder, secret-free values, and `.gitignore` is updated to keep secrets out of source control.
 
-The solution must compile with zero errors from `dotnet build` at `./server`, and secrets must never be committed to source control.
+The expected outcome is that `dotnet build` from `./server` compiles with zero errors and that all subsequent backend stories can add features by dropping use-case folders into the appropriate context project without restructuring.
 
 ## Goals
 
-- Create .NET 10 solution with all 17 projects and correct cross-project references
-- Implement `Result<T>` with `Data`, `Errors`, `StatusCode`, `IsSuccess` in Shared
-- Implement `TypedResultHelper` in Api mapping Result status codes to IResult
-- Create module self-registration pattern (`AddAuthModule()`, `AddRestaurantsModule()`, `AddReservationsModule()`)
-- Configure `appsettings.json` with `Jwt` and `ConnectionStrings` sections (placeholder values, no secrets)
-- Add `.gitignore` covering `bin/`, `obj/`, `appsettings.*.json` secrets, `*.user`
+- A `.sln` at `./server` referencing all layer and context projects plus both test projects.
+- Per-context class library projects named `CM.TableNow.<BusinessContext>.<Layer>` for the Auth, Restaurants, and Reservations contexts.
+- An Api host project (`CM.TableNow.Api`) with `Endpoints/`, `Extensions/`, and `Mappers/` folders.
+- A `Shared` project containing a generic `Result<T>` type (`Data`, `Errors`, `StatusCode`, `IsSuccess`) and a `TypedResultHelper` for mapping results to minimal-API typed results.
+- `ServiceCollectionExtensions.RegisterServices()` that calls `Add[Context]Module()` for each context.
+- `appsettings.json` with `Jwt` and `ConnectionStrings` sections holding no real secrets.
+- `.gitignore` entries that exclude secrets / `.env` / user-secrets artifacts.
+- `dotnet build` from `./server` succeeds with zero errors.
 
 ## Non-Goals
 
-- No implementation logic in any project — project structure and cross-cutting types only
-- No EF Core migrations (STORY-003)
-- No real JWT configuration values (STORY-006)
-- No seeded data (STORY-004)
-- No HTTP endpoints (STORY-005+)
+- No domain entities, EF models, migrations, or seed data (covered by STORY-003 / STORY-004).
+- No feature handlers, endpoints, or business logic (covered by later stories).
+- No JWT bearer middleware wiring or CORS policy (covered by STORY-007) — only the empty `Jwt`/`ConnectionStrings` configuration sections are added here.
+- No frontend work (covered by STORY-002).
 
 ## Acceptance Criteria
 
-- [ ] `dotnet build server/tablenow.sln` compiles with zero errors
-- [ ] All 17 projects exist with correct SDK types and cross-project references
-- [ ] `Result<T>` in Shared has `Data`, `Errors`, `StatusCode`, `IsSuccess` with static factory methods
-- [ ] `TypedResultHelper` in Api maps 200/201/400/401/403/404/409 correctly
-- [ ] `appsettings.json` has `Jwt` and `ConnectionStrings` sections with no committed secrets
-- [ ] `.gitignore` prevents committing `bin/`, `obj/`, and secret config files
+- [ ] Running `dotnet build` from `./server` compiles the solution with zero errors.
+- [ ] The solution contains `Api`, `Application`, `Domain`, `Data`, `Contracts`, `Shared`, `Infrastructure`, and `Migrations` projects following the per-module layout.
+- [ ] The `Shared` project contains a `Result<T>` type with `Data`, `Errors`, `StatusCode`, and `IsSuccess` members.
+- [ ] `appsettings.json` has `Jwt` and `ConnectionStrings` sections with no committed secrets.
+- [ ] `ServiceCollectionExtensions.RegisterServices()` wires up `Add[Context]Module()` calls.
+- [ ] `.gitignore` excludes secrets / `.env` files.
 
 ## Assumptions
 
-- .NET 10 SDK is installed (`dotnet --version` reports 10.x)
-- The `server/` directory does not yet exist in the repository
-- No deployment infrastructure needed for this story
+- The .NET 10 SDK is installed on the developer machine and `dotnet` is on the PATH.
+- The company/product prefix for all projects is `CM.TableNow` (per CLAUDE.md project naming `CM.TableNow.<BusinessContext>.<Layer>`).
+- The business contexts for Phase 1 MVP are `Auth`, `Restaurants`, and `Reservations`. Empty context projects may be created now and populated by later stories.
+- The Mediator NuGet package is referenced where handlers will live (Application and Data projects), even though no handlers exist yet.
 
 ## Technical Constraints
 
-- Each business context is a separate class library project — no monolithic Application or Data project
-- Application projects reference Domain and Shared only (never Data of another module)
-- Data projects reference Domain and Shared only (never Application)
-- Api references all Application, Data, Infrastructure, and Contracts projects
-- No module may reference another module's Application or Data project directly — cross-module calls go through IMediator + Contracts
-- Use file-scoped namespaces, C# primary constructors, `nullable enable`, `net10.0` throughout
+- Modular monolith with CQRS via Mediator (source-generated). Request flow: HTTP → Minimal API Endpoint → `IMediator.Send(AppRequest)` → AppRequestHandler → `IMediator.Send(DataQuery/Command)` → EF Core DbContext.
+- Each business context is a **separate** class library project per layer. A context's Application/Data project must never reference another context's Application/Data project (cross-module calls go through `Contracts.Public` via `IMediator`).
+- All handlers return `Result<T>` from the Shared project (`CM.TableNow.Shared` / referenced as `CM.OpenTable.Common` namespace per CLAUDE.md — use the `CM.TableNow.Shared` project with a `Result<T>` type).
+- Code style: file-scoped namespaces, nullable enabled, primary constructors for DI, records for DTOs/commands, `CancellationToken` on all async methods.
+- No repository pattern, no AutoMapper.
+- `OnModelCreating` (later stories) will use `ApplyConfigurationsFromAssembly` — the Data projects must be structured to support this.

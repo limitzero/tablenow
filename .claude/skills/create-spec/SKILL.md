@@ -7,7 +7,7 @@ description: >
   where the user wants to capture decisions as actionable spec files. Also use when the user
   says "/create-spec" or wants to decompose a feature into work items that agents can implement
   independently. This skill produces local spec files under specs/{feature}/ — no GitHub integration.
-argument-hint: <path-to-stories-doocument>
+argument-hint: <path-to-stories-document>
 ---
 
 Input: `$ARGUMENTS`
@@ -30,14 +30,14 @@ The key insight: implementation plans that live in a single file are either too 
 
 ### Step 1: Examine extracted features from product plan 
 
-Examine the files found at the folder `.docs\features` for any markdown files in the directory, if there are not any files listed, prompt the user to run the skill `/create-specs` for creating the listing of features from an existing product plan and exit. 
+Examine the files found at the folder `.docs/features` for any markdown files in the directory, if there are not any files listed, prompt the user to run the skill `/create-specs` for creating the listing of features from an existing product plan and exit. 
 
 
 ### Step 2: Decompose the feature files
 
-For each story found in `.docs/features`:
+For each story found in `.docs/features/stories.md`:
 
-  1. Create a directory named `.docs/features/{story-name}` if it does not exist, the `{story name}` should be in kebab-case with no special characters
+  1. Create a directory named `.docs/features/{story-name}` if it does not exist, the `{story-name}` should be in kebab-case with no special characters
 
   2. Break the implementation into atomic tasks. Each task should:
     - Be completable in a single coding session by one agent
@@ -69,6 +69,7 @@ For each story found in `.docs/features`:
       ├── README.md
       ├── requirements.md
       ├── action-required.md
+      ├── implementation-plan.md
       └── tasks/
           ├── task-01-{name}.md
           ├── task-02-{name}.md
@@ -128,7 +129,46 @@ For each story found in `.docs/features`:
 
   9. Create listing of all tasks by feature and phase
 
-    There should be a markdown file named `implementation-plan.md` that is created in the directory `.docs\features` that lists all tasks separated by phases that a coder agent can look at and pick up work and mark as complete.
+      There should be a markdown file named `implementation-plan.md` that is created in the directory `.docs/features/{feature-name}` that lists all tasks separated by phases that a coder agent can look at and pick up work and mark as complete.
+
+      Use this structure for `implementation-plan.md`:
+
+      ```markdown
+      # Implementation Plan: {Feature Name}
+
+      ## Overview
+
+      Brief summary of what will be built.
+
+      ## Phase 1: {Phase Name}
+
+      {Brief description of this phase's goal}
+
+      ### Tasks
+
+      - [ ] Task 1 description
+      - [ ] Task 2 description (depends on Task 1)
+      - [ ] Task 3 description [complex]
+        - [ ] Sub-task 3a
+        - [ ] Sub-task 3b
+
+      ### Technical Details
+
+      {Include CLI commands, code snippets, schemas, and other implementation specifics discussed during planning that are relevant to this phase's tasks.}
+
+      ## Phase 2: {Phase Name}
+
+      {Brief description}
+
+      ### Tasks
+
+      - [ ] Task 4 description (depends on Phase 1)
+      - [ ] Task 5 description
+
+      ### Technical Details
+
+      {Technical details for Phase 2 tasks.}
+      ```
 
   ### Critical Rules
 

@@ -1,5 +1,5 @@
 # Action Required: Project Scaffolding — Backend
 
-No manual steps required for this story. All tasks can be implemented automatically.
+No manual steps required for this feature. All tasks can be implemented automatically.
 
-**Prerequisite:** Ensure .NET 10 SDK is installed locally. Verify with `dotnet --version` — it must report `10.x.x`.
+> Note: `appsettings.json` is created with placeholder, secret-free values. Real JWT secrets and connection strings are supplied later via environment variables / user-secrets (see STORY-006 and STORY-007) and are intentionally not part of this scaffolding story.

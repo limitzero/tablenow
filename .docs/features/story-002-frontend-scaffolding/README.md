@@ -1,34 +1,31 @@
-# Story 002: Project Scaffolding — Frontend
+# Project Scaffolding — Frontend
 
 ## Overview
 
-Creates the Angular 21 standalone-component project at `./client` with the feature-based folder structure, Angular Material custom theme, NgRx Signal Store, and environment configuration. All subsequent frontend stories depend on this foundation. No application features are implemented — only the structural skeleton, routing, and design system setup.
+This feature scaffolds the Angular 21 frontend for TableNow as a standalone-component application (no `NgModule`, bootstrapped with `bootstrapApplication`). It initializes the project with the required toolchain — Angular Material, NgRx Signal Store, Vitest, and Playwright — and establishes the feature-based folder structure (`core/`, `shared/`, `features/`) with a custom Angular Material theme and environment configuration pointing at the backend API. Every subsequent frontend story (auth, restaurant listing, reservations) builds on this scaffold, so `npm run build` must succeed with zero errors.
 
 ## Quick Links
 
-- [Requirements](./requirements.md)
-- [Action Required](./action-required.md)
+- [Requirements](./requirements.md) — full requirements and acceptance criteria
+- [Action Required](./action-required.md) — manual steps needing human action
+- [Implementation Plan](./implementation-plan.md) — phased task checklist
 
 ## Dependency Graph
 
 ```mermaid
 graph TD
-    task-01["01: Angular Project Init"]
-    task-02["02: Folder Structure & Theme"]
-    task-01 --> task-02
+    task-01-angular-project-init["01: Angular Project Init"]
+    task-02-folder-structure-theme["02: Folder Structure & Theme"]
 ```
 
 ## Phases
 
 | Phase | Tasks | Description |
-|-------|-------|-------------|
-| 1 | task-01 | Initialize Angular 21 project with bootstrapApplication and install packages |
-| 2 | task-02 | Create feature folder structure, Material theme, and environment files |
+|------|-------|-------------|
+| 1 | task-01, task-02 | Initialize the Angular 21 standalone project and add dependencies (task-01); create the `core/`/`shared/`/`features/` folder structure, custom Material theme, and environment config (task-02). Both run in parallel against disjoint files. |
 
 ## Task Status
 
 ### Phase 1
-- [ ] [task-01-angular-project-init](./tasks/task-01-angular-project-init.md) — Initialize Angular 21 with standalone bootstrapApplication
-
-### Phase 2
-- [ ] [task-02-folder-structure-theme](./tasks/task-02-folder-structure-theme.md) — Feature folders, Material theme, environment.ts
+- [ ] [task-01-angular-project-init](./tasks/task-01-angular-project-init.md) — Initialize Angular 21 standalone project and add dependencies
+- [ ] [task-02-folder-structure-theme](./tasks/task-02-folder-structure-theme.md) — Folder structure, Material theme, environment config

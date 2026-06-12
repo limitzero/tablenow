@@ -1,4 +1,4 @@
-# Task 01: Solution Structure
+# Task 01: Solution & Project Structure
 
 ## Status
 
@@ -10,119 +10,126 @@ pending
 
 ## Description
 
-Creates the .NET 10 solution file and all 17 project files for the TableNow backend. No implementation code is written — only the structural skeleton with correct cross-project references and NuGet package declarations. All subsequent backend tasks across all stories depend on this project structure existing.
+Create the complete .NET 10 modular-monolith solution skeleton for TableNow: a solution file, the Api host project, the per-business-context class library projects across every layer, the cross-cutting `Shared` and `Contracts` projects, and the two test projects. This is the foundation every other backend story builds on, so the solution must compile cleanly with `dotnet build` and follow the folder/naming rules in `.docs/design/backend/backend-project-structure.md`.
 
 ## Dependencies
 
 **Depends on:** None (Wave 1)
-**Blocks:** task-02-shared-result-type.md, task-03-module-registration.md
+**Blocks:** task-03-module-registration
 
-**Context from dependencies:** None — this is the first backend task.
+**Context from dependencies:** None. This is a greenfield task — no prior task output is required. It produces the project layout and `.csproj` references that task-03 (module registration) and all subsequent backend stories depend on.
 
 ## Files to Create
 
-- `server/Directory.Build.props` — shared TFM, nullable, implicit usings
-- `server/tablenow.sln` — solution file
-- `server/src/Api/Api.csproj` — web entry point (`Sdk.Web`)
-- `server/src/Api/Program.cs` — minimal stub
-- `server/src/Application/Auth/Application.Auth.csproj`
-- `server/src/Application/Restaurants/Application.Restaurants.csproj`
-- `server/src/Application/Reservations/Application.Reservations.csproj`
-- `server/src/Domain/Auth/Domain.Auth.csproj`
-- `server/src/Domain/Restaurants/Domain.Restaurants.csproj`
-- `server/src/Domain/Reservations/Domain.Reservations.csproj`
-- `server/src/Data/Auth/Data.Auth.csproj`
-- `server/src/Data/Restaurants/Data.Restaurants.csproj`
-- `server/src/Data/Reservations/Data.Reservations.csproj`
-- `server/src/Contracts/Contracts.csproj`
-- `server/src/Shared/Shared.csproj`
-- `server/src/Infrastructure/Auth/Infrastructure.Auth.csproj`
-- `server/src/Infrastructure/Notifications/Infrastructure.Notifications.csproj`
-- `server/src/Migrations/Migrations.csproj`
-- `server/tests/UnitTests/UnitTests.csproj`
-- `server/tests/IntegrationTests/IntegrationTests.csproj`
+Solution and host:
+- `server/TableNow.sln` — solution file referencing every project below.
+- `server/src/Api/CM.TableNow.Api.csproj` — ASP.NET Core minimal-API host (`<OutputType>` exe, web SDK).
+- `server/src/Api/Program.cs` — minimal `WebApplication` bootstrap (builder + `app.Run()`); leaves a `// RegisterServices wired in task-03` marker.
+- `server/src/Api/Endpoints/.gitkeep` — placeholder for endpoint classes.
+- `server/src/Api/Extensions/.gitkeep` — placeholder for DI extension classes.
+- `server/src/Api/Mappers/.gitkeep` — placeholder for `[Context]Mapper` static classes.
+
+Shared & Contracts:
+- `server/src/Shared/CM.TableNow.Shared.csproj` — class library (no dependencies on other layers).
+- `server/src/Contracts/CM.TableNow.Contracts.csproj` — class library for API-facing request/response models and `Contracts.Public` cross-module contracts.
+
+Per-context layer projects (for each context `Auth`, `Restaurants`, `Reservations`):
+- `server/src/Application/<Context>/CM.TableNow.<Context>.Application.csproj` — references `Shared`, `Domain` (same context), `Contracts`, Mediator.
+- `server/src/Application/<Context>/Features/.gitkeep` — use-case folders go here.
+- `server/src/Domain/<Context>/CM.TableNow.<Context>.Domain.csproj` — references `Shared` only; no EF, no Mediator.
+- `server/src/Data/<Context>/CM.TableNow.<Context>.Data.csproj` — references `Shared`, `Domain` (same context), Mediator, EF Core.
+- `server/src/Data/<Context>/Models/.gitkeep` — EF models go here.
+- `server/src/Data/<Context>/Configurations/.gitkeep` — Fluent API configs go here.
+- `server/src/Data/<Context>/Commands/.gitkeep` and `server/src/Data/<Context>/Queries/.gitkeep`.
+- `server/src/Infrastructure/<Context>/CM.TableNow.<Context>.Infrastructure.csproj` — references `Shared`, `Application` (same context), config packages.
+- `server/src/Migrations/<Context>/CM.TableNow.<Context>.Migrations.csproj` — references the context's `Data` project and EF Core Design.
+
+Tests:
+- `server/tests/UnitTests/CM.TableNow.UnitTests.csproj` — xUnit + FluentAssertions; references Application and Domain projects.
+- `server/tests/IntegrationTests/CM.TableNow.IntegrationTests.csproj` — xUnit + FluentAssertions + `Microsoft.AspNetCore.Mvc.Testing`; references the Api project.
+
+## Files to Modify
+
+- None (greenfield).
 
 ## Technical Details
 
 ### Implementation Steps
 
-1. Create `server/Directory.Build.props` with shared properties for all projects.
+1. Create the solution: `dotnet new sln -n TableNow -o server`.
+2. Create the Api host: `dotnet new web -n CM.TableNow.Api -o server/src/Api`. Strip the default minimal endpoint down to a bare bootstrap.
+3. Create the `Shared` and `Contracts` class libraries: `dotnet new classlib`.
+4. For each context (`Auth`, `Restaurants`, `Reservations`), create the five layer libraries (`Application`, `Domain`, `Data`, `Infrastructure`, `Migrations`) with `dotnet new classlib` at the paths listed above.
+5. Create the two test projects: `dotnet new xunit`.
+6. Add every project to the solution with `dotnet sln server/TableNow.sln add <path>`.
+7. Wire project references (`dotnet add <proj> reference <proj>`) following the dependency rules below.
+8. Add NuGet packages to the appropriate projects (see Package matrix).
+9. Set common properties in every `.csproj`: `<Nullable>enable</Nullable>`, `<ImplicitUsings>enable</ImplicitUsings>`, `<LangVersion>latest</LangVersion>`, `<TargetFramework>net10.0</TargetFramework>`.
+10. Run `dotnet build server/TableNow.sln` and confirm zero errors.
 
-2. Create each `.csproj`. Class libraries use `Microsoft.NET.Sdk`. The `Api` project uses `Microsoft.NET.Sdk.Web`. Test projects include `<IsPackable>false</IsPackable>`.
+### Project reference rules
 
-3. Add NuGet packages to the correct projects:
-   - `Api.csproj`: `Mediator` (3.x), `Mediator.SourceGenerator` (3.x, OutputItemType=Analyzer), `FluentValidation.AspNetCore`, `Microsoft.AspNetCore.Authentication.JwtBearer`
-   - `Data/*.csproj`: `Microsoft.EntityFrameworkCore.SqlServer`, `Microsoft.EntityFrameworkCore.Sqlite`
-   - `Infrastructure.Auth.csproj`: `BCrypt.Net-Next`, `System.IdentityModel.Tokens.Jwt`, `Microsoft.Extensions.Options`
-   - `Infrastructure.Notifications.csproj`: `SendGrid`, `Polly`, `Microsoft.Extensions.Http.Polly`
-   - `Migrations.csproj`: `Microsoft.EntityFrameworkCore.Design`, `Microsoft.EntityFrameworkCore.SqlServer`, `Microsoft.EntityFrameworkCore.Sqlite`
-   - `UnitTests.csproj`: `xunit`, `xunit.runner.visualstudio`, `Moq`, `FluentAssertions`, `Microsoft.NET.Test.Sdk`
-   - `IntegrationTests.csproj`: `Microsoft.AspNetCore.Mvc.Testing`, `Testcontainers.MsSql`, `FluentAssertions`, `Microsoft.NET.Test.Sdk`
+- `Domain.<Context>` → `Shared` only.
+- `Application.<Context>` → `Shared`, `Domain.<Context>`, `Contracts`, Mediator.
+- `Data.<Context>` → `Shared`, `Domain.<Context>`, Mediator, EF Core.
+- `Infrastructure.<Context>` → `Shared`, `Application.<Context>`.
+- `Migrations.<Context>` → `Data.<Context>`.
+- `Api` → all `Application.<Context>`, all `Infrastructure.<Context>`, all `Data.<Context>` (for DI registration), `Contracts`, `Shared`.
+- **Forbidden:** one context's Application/Data referencing another context's Application/Data. Cross-module communication uses `IMediator` + the `Contracts` (`Contracts.Public`) assembly only.
 
-4. Wire cross-project references:
-   - `Application/*` → `Domain/same-context`, `Shared`, `Contracts`
-   - `Data/*` → `Domain/same-context`, `Shared`
-   - `Infrastructure/*` → `Shared`
-   - `Api` → all `Application/*`, all `Data/*`, all `Infrastructure/*`, `Contracts`, `Shared`
-   - `Migrations` → all `Data/*`, all `Domain/*`, `Shared`
-   - `UnitTests` → all `Application/*`, all `Domain/*`, `Shared`, `Contracts`
-   - `IntegrationTests` → `Api`
+### Package matrix
 
-5. Run `dotnet sln tablenow.sln add` for each project to register in solution.
+| Project | Packages |
+|---|---|
+| `Application.<Context>` | `Mediator.Abstractions`, `FluentValidation` |
+| `Data.<Context>` | `Microsoft.EntityFrameworkCore`, `Mediator.Abstractions` |
+| `Migrations.<Context>` | `Microsoft.EntityFrameworkCore.Design` |
+| `Api` | `Mediator.SourceGenerator`, `Scalar.AspNetCore`, `Microsoft.EntityFrameworkCore.Design` |
+| `UnitTests` | `xunit`, `FluentAssertions`, `Microsoft.NET.Test.Sdk` |
+| `IntegrationTests` | `xunit`, `FluentAssertions`, `Microsoft.AspNetCore.Mvc.Testing`, `Microsoft.NET.Test.Sdk` |
 
-6. Create a minimal `server/src/Api/Program.cs` stub so the solution compiles.
+Use the source-generated Mediator: `Mediator.SourceGenerator` analyzer in the Api project (the composition root) and `Mediator.Abstractions` everywhere handlers/requests are declared.
 
 ### Code Snippets
 
-```xml
-<!-- server/Directory.Build.props -->
-<Project>
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-  </PropertyGroup>
-</Project>
-```
-
-```xml
-<!-- server/src/Api/Api.csproj -->
-<Project Sdk="Microsoft.NET.Sdk.Web">
-  <PropertyGroup>
-    <AssemblyName>TableNow.Api</AssemblyName>
-    <RootNamespace>TableNow.Api</RootNamespace>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Mediator" Version="3.*" />
-    <PackageReference Include="Mediator.SourceGenerator" Version="3.*" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Application\Auth\Application.Auth.csproj" />
-    <ProjectReference Include="..\..\Application\Restaurants\Application.Restaurants.csproj" />
-    <ProjectReference Include="..\..\Application\Reservations\Application.Reservations.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Auth\Infrastructure.Auth.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Notifications\Infrastructure.Notifications.csproj" />
-    <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
-    <ProjectReference Include="..\..\Shared\Shared.csproj" />
-  </ItemGroup>
-</Project>
-```
+Minimal `Program.cs` bootstrap (to be expanded by task-03):
 
 ```csharp
-// server/src/Api/Program.cs (minimal stub — expanded in later tasks)
 var builder = WebApplication.CreateBuilder(args);
+
+// RegisterServices wired in task-03 (story-001) via builder.Services.RegisterServices(builder.Configuration);
+
 var app = builder.Build();
+
 app.Run();
+
+// Exposed for WebApplicationFactory<Program> integration tests.
+public partial class Program;
+```
+
+Common `.csproj` property block:
+
+```xml
+<PropertyGroup>
+  <TargetFramework>net10.0</TargetFramework>
+  <Nullable>enable</Nullable>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <LangVersion>latest</LangVersion>
+</PropertyGroup>
 ```
 
 ## Acceptance Criteria
 
-- [ ] `dotnet build server/tablenow.sln` succeeds with zero errors
-- [ ] All 17 projects exist with correct `.csproj` SDK types
-- [ ] Cross-project references are wired as specified (Application refs Domain+Shared, Data refs Domain+Shared, Api refs all modules)
-- [ ] NuGet packages are declared in the correct project files
-- [ ] `Directory.Build.props` sets `net10.0`, `Nullable=enable`, `ImplicitUsings=enable`
+- [ ] `server/TableNow.sln` exists and references the Api, Shared, Contracts, all three contexts' Application/Domain/Data/Infrastructure/Migrations projects, and both test projects.
+- [ ] All projects target `net10.0` with nullable and implicit usings enabled.
+- [ ] Project references follow the rules above; no cross-context Application/Data reference exists.
+- [ ] The Api project has `Endpoints/`, `Extensions/`, and `Mappers/` folders.
+- [ ] Each Application context has a `Features/` folder; each Data context has `Models/`, `Configurations/`, `Commands/`, and `Queries/` folders.
+- [ ] `Program.cs` declares `public partial class Program;` so integration tests can use `WebApplicationFactory<Program>`.
+- [ ] `dotnet build server/TableNow.sln` completes with zero errors.
+
+## Notes
+
+- CLAUDE.md references the `Result<T>` type as living in `CM.OpenTable.Common`; for this project use the `CM.TableNow.Shared` project. Keep the type's public shape (`Data`, `Errors`, `StatusCode`, `IsSuccess`) consistent with task-02 — do not implement `Result<T>` here, just ensure the `Shared` project exists and is referenced.
+- Do not add the JWT bearer or CORS packages here — those belong to STORY-007.
+- `.gitkeep` files keep empty folders under source control; remove them as real files are added in later stories.

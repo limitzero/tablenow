@@ -2,44 +2,48 @@
 
 ## Summary
 
-TableNow needs four core tables: `Users`, `Restaurants`, `TimeSlots`, and `Reservations`. The architecture separates domain entity classes (in Domain projects, no EF annotations) from EF Fluent API configurations (in Data projects). This prevents domain models from becoming entangled with persistence concerns.
+TableNow needs a persistent data model for users, restaurants, time slots, and reservations before any feature can store or query data. This story defines those four core entities as code-first EF Core models and produces an initial migration that creates the schema repeatably.
 
-The `TimeSlot` entity requires a row-version concurrency token (`RowVersion byte[]`) so that two simultaneous reservation attempts for the same slot trigger a `DbUpdateConcurrencyException` — the foundation for the double-booking prevention in STORY-014.
+Following the project's architecture, domain entities live in each context's `Domain/<Context>/` project and carry **no** EF annotations — they are pure business types. The EF mapping lives separately in each context's `Data/<Context>/Models/` and `Configurations/` folders using the Fluent API, registered via `ApplyConfigurationsFromAssembly` in each `DbContext`. The `TimeSlot` entity gets a `RemainingCapacity` column plus an optimistic-concurrency token (row version) so the later reservation-creation story can decrement capacity atomically and prevent double-booking.
 
-Migrations run via the `server/src/Migrations/` project. The initial migration produces the full schema and must apply cleanly on both SQLite (development) and SQL Server (production).
+The expected outcome is that `dotnet ef database update` applies the schema without errors against SQLite (local dev) and SQL Server (prod), producing `Users`, `Restaurants`, `TimeSlots`, and `Reservations` tables with correct columns and foreign keys.
 
 ## Goals
 
-- Four domain entity classes with no EF attributes
-- Fluent API configurations for all four entities
-- `AppDbContext` with `OnModelCreating` using `ApplyConfigurationsFromAssembly`
-- `TimeSlot.RowVersion` configured as a concurrency token via `IsRowVersion()`
-- `dotnet ef database update` runs without errors on SQLite dev
+- Domain entities `User`, `Restaurant`, `TimeSlot`, and `Reservation` in the appropriate `Domain/<Context>/` projects, with value objects where natural and no EF attributes.
+- EF models in `Data/<Context>/Models/` and Fluent API configurations in `Data/<Context>/Configurations/`.
+- A `DbContext` per business context whose `OnModelCreating` uses `ApplyConfigurationsFromAssembly`.
+- A `RemainingCapacity` column on `TimeSlot` plus an optimistic-concurrency token (row version / timestamp).
+- A migrations project under `server/src/Migrations/` and an initial migration covering all entities.
+- `dotnet ef database update` applies the schema cleanly against SQLite (dev) and SQL Server (prod).
 
 ## Non-Goals
 
-- Seed data (STORY-004)
-- Additional entities for reviews, photos, favorites (STORY-023, 025, 028)
-- EF migrations for those later entities
+- No seed data (covered by STORY-004).
+- No query/command handlers or endpoints (covered by STORY-005, 010, 011, 014+).
+- No reviews, photos, favorites entities (Phase 3/4 stories).
+- No business logic for capacity decrement — only the schema and concurrency token are established here.
 
 ## Acceptance Criteria
 
-- [ ] `User`, `Restaurant`, `TimeSlot`, `Reservation` domain entities exist with correct properties
-- [ ] No EF attributes on domain entities (only Fluent API)
-- [ ] `AppDbContext` uses `ApplyConfigurationsFromAssembly` in `OnModelCreating`
-- [ ] `TimeSlot.RowVersion` is configured as `IsRowVersion()` (optimistic concurrency)
-- [ ] `dotnet ef database update` from the Migrations project applies without errors
+- [ ] `User`, `Restaurant`, `TimeSlot`, and `Reservation` tables exist with correct columns and foreign keys.
+- [ ] `dotnet ef database update` applies the schema without errors against SQLite (dev) and SQL Server (prod).
+- [ ] `TimeSlot` has a `RemainingCapacity` column and a concurrency token (row version or timestamp).
+- [ ] `OnModelCreating` uses `ApplyConfigurationsFromAssembly` with Fluent API configurations in `Configurations/`.
+- [ ] Domain entities carry no EF annotations.
 
 ## Assumptions
 
-- STORY-001 is complete (solution structure exists)
-- SQL Server is available for production; SQLite used for local dev
-- `ReminderSent` column added to Reservation in STORY-022 (not here)
+- STORY-001 has produced the solution, the per-context `Domain` and `Data` projects, and the `Migrations` project shells.
+- Contexts: `User` → Auth context; `Restaurant` and `TimeSlot` → Restaurants context; `Reservation` → Reservations context.
+- The dev provider is SQLite and the prod provider is SQL Server; the concurrency token must work on both (SQLite uses a manually-managed row-version column; SQL Server can use `rowversion`).
+- Connection strings come from configuration established in STORY-001 (`ConnectionStrings:Default`).
 
 ## Technical Constraints
 
-- Domain entities in `Domain/<Context>/` — pure C# classes
-- EF model configurations in `Data/<Context>/Configurations/`
-- `OnModelCreating` must use `ApplyConfigurationsFromAssembly` — do not configure entities inline
-- Use Fluent API only — no `[Key]`, `[Required]`, `[MaxLength]` data annotations on domain entities
-- Soft FK relationships via `HasOne`/`HasForeignKey` in configurations
+- One EF model per entity in `Data/<Context>/Models/`; Fluent API only in `Configurations/`; no `[Attribute]` mappings on domain entities.
+- Do not split an entity into separate Persistence + Domain models with divergent shapes — the EF model maps the domain entity; keep them aligned per CLAUDE.md ("Do not split EF entity into Persistence + Domain models").
+- No repository pattern — DbContext is used directly by Data handlers (later stories).
+- The concurrency token must be cross-provider: prefer a `byte[] RowVersion` configured `.IsRowVersion()` for SQL Server and `.IsConcurrencyToken()` with a value generator/converter strategy that also functions on SQLite, OR a `Guid`/`long` version column updated on save. Document the chosen approach in the migration.
+- File-scoped namespaces, nullable enabled, records for value objects where appropriate.
+- `Reservation.Status` is an enum with values `Confirmed` and `Cancelled`.

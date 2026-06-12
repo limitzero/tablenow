@@ -1,10 +1,10 @@
 ---
-description: Publish a feature from /specs to GitHub Issues and Projects
+description: Publish a feature from /features to GitHub Issues and Projects
 ---
 
 # Publish Feature to GitHub
 
-This command publishes a feature from the /specs folder to GitHub, creating:
+This command publishes a feature from the /features folder to GitHub, creating:
 
 - An Epic issue containing the full requirements
 - Phase issues for each phase in the implementation plan (with task checklists)
@@ -16,14 +16,14 @@ This command publishes a feature from the /specs folder to GitHub, creating:
 
 - The GitHub CLI (`gh`) must be authenticated: `gh auth status`
 - The GitHub CLI must have project scopes: Token scopes should include `project` and `read:project`. If missing, run: `gh auth refresh -s project,read:project`
-- A feature folder must exist in /specs with `requirements.md` and `implementation-plan.md`
+- A feature folder must exist in /features with `requirements.md` and `implementation-plan.md`
 
 ## Instructions
 
 ### 1. Identify the Feature
 
 Look for the feature folder attached to the conversation or specified by the user.
-The folder should be at `/specs/{feature-name}/` and contain:
+The folder should be at `/features/{feature-name}/` and contain:
 
 - `requirements.md` - Feature requirements
 - `implementation-plan.md` - Task breakdown with phases
@@ -51,7 +51,7 @@ Store the results as:
 
 ```bash
 gh label create "epic" --color "7057ff" --description "Feature epic" 2>/dev/null || true
-gh label create "feature/{feature-name}" --color "0E8A16" --description "Feature: {feature-title}" 2>/dev/null || true
+gh label create "features/{feature-name}" --color "0E8A16" --description "Feature: {feature-title}" 2>/dev/null || true
 gh label create "phase-1" --color "C5DEF5" --description "Phase 1 tasks" 2>/dev/null || true
 gh label create "phase-2" --color "BFD4F2" --description "Phase 2 tasks" 2>/dev/null || true
 gh label create "phase-3" --color "A2C4E0" --description "Phase 3 tasks" 2>/dev/null || true
@@ -65,8 +65,8 @@ Create an Epic issue with the full requirements:
 gh issue create \
   --title "Epic: {Feature Title}" \
   --label "epic" \
-  --label "feature/{feature-name}" \
-  --body-file specs/{feature-name}/requirements.md
+  --label "features/{feature-name}" \
+  --body-file features/{feature-name}/requirements.md
 ```
 
 Capture the issue number from the output (e.g., `#100`).
@@ -102,7 +102,7 @@ Part of Epic: #{epic-number}
 ```bash
 gh issue create \
   --title "Phase {n}: {Phase Title}" \
-  --label "feature/{feature-name}" \
+  --label "features/{feature-name}" \
   --label "phase-{n}" \
   --body "{issue-body}"
 ```
@@ -125,7 +125,7 @@ If a phase meets any of these criteria, consider breaking out individual tasks a
 ```bash
 gh issue create \
   --title "{Task description}" \
-  --label "feature/{feature-name}" \
+  --label "features/{feature-name}" \
   --label "phase-{n}" \
   --body "## Context
 
@@ -204,7 +204,7 @@ gh project item-add {project-number} --owner {owner} --url "https://github.com/{
 
 ### 10. Create github.md
 
-Create `specs/{feature-name}/github.md` with all the GitHub references:
+Create `features/{feature-name}/github.md` with all the GitHub references:
 
 ```markdown
 ---
@@ -248,7 +248,7 @@ _(Omit this section if no complex tasks were broken out)_
 ## Labels
 
 - `epic` - Feature epic marker
-- `feature/{feature-name}` - Feature-specific label
+- `features/{feature-name}` - Feature-specific label
 - `phase-1`, `phase-2`, `phase-3` - Phase markers
 ```
 
