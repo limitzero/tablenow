@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Auth\CM.TableNow.Auth.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Auth\CM.TableNow.Auth.Infrastructure.csproj" />
+    <ProjectReference Include="..\Data\Auth\CM.TableNow.Auth.Data.csproj" />
+    <ProjectReference Include="..\Application\Restaurants\CM.TableNow.Restaurants.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Restaurants\CM.TableNow.Restaurants.Infrastructure.csproj" />
+    <ProjectReference Include="..\Data\Restaurants\CM.TableNow.Restaurants.Data.csproj" />
+    <ProjectReference Include="..\Application\Reservations\CM.TableNow.Reservations.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Reservations\CM.TableNow.Reservations.Infrastructure.csproj" />
+    <ProjectReference Include="..\Data\Reservations\CM.TableNow.Reservations.Data.csproj" />
+    <ProjectReference Include="..\Contracts\CM.TableNow.Contracts.csproj" />
+    <ProjectReference Include="..\Shared\CM.TableNow.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mediator.SourceGenerator" Version="*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="*" />
+    <PackageReference Include="Scalar.AspNetCore" Version="*" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

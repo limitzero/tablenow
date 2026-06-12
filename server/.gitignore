@@ -1,0 +1,21 @@
+# Build output
+bin/
+obj/
+
+# User secrets and local config
+appsettings.*.local.json
+secrets.json
+.env
+.env.*
+*.user
+
+# Rider / VS
+.idea/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Roslyn analyzer output
+*.GeneratedMSBuildEditorConfig.editorconfig

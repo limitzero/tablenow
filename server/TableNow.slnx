@@ -1,0 +1,69 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Api/">
+    <Project Path="src/Api/CM.TableNow.Api.csproj" />
+  </Folder>
+  <Folder Name="/src/Application/" />
+  <Folder Name="/src/Application/Auth/">
+    <Project Path="src/Application/Auth/CM.TableNow.Auth.Application.csproj" />
+  </Folder>
+  <Folder Name="/src/Application/Reservations/">
+    <Project Path="src/Application/Reservations/CM.TableNow.Reservations.Application.csproj" />
+  </Folder>
+  <Folder Name="/src/Application/Restaurants/">
+    <Project Path="src/Application/Restaurants/CM.TableNow.Restaurants.Application.csproj" />
+  </Folder>
+  <Folder Name="/src/Contracts/">
+    <Project Path="src/Contracts/CM.TableNow.Contracts.csproj" />
+  </Folder>
+  <Folder Name="/src/Data/" />
+  <Folder Name="/src/Data/Auth/">
+    <Project Path="src/Data/Auth/CM.TableNow.Auth.Data.csproj" />
+  </Folder>
+  <Folder Name="/src/Data/Reservations/">
+    <Project Path="src/Data/Reservations/CM.TableNow.Reservations.Data.csproj" />
+  </Folder>
+  <Folder Name="/src/Data/Restaurants/">
+    <Project Path="src/Data/Restaurants/CM.TableNow.Restaurants.Data.csproj" />
+  </Folder>
+  <Folder Name="/src/Domain/" />
+  <Folder Name="/src/Domain/Auth/">
+    <Project Path="src/Domain/Auth/CM.TableNow.Auth.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Domain/Reservations/">
+    <Project Path="src/Domain/Reservations/CM.TableNow.Reservations.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Domain/Restaurants/">
+    <Project Path="src/Domain/Restaurants/CM.TableNow.Restaurants.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/" />
+  <Folder Name="/src/Infrastructure/Auth/">
+    <Project Path="src/Infrastructure/Auth/CM.TableNow.Auth.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/Reservations/">
+    <Project Path="src/Infrastructure/Reservations/CM.TableNow.Reservations.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/Restaurants/">
+    <Project Path="src/Infrastructure/Restaurants/CM.TableNow.Restaurants.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Migrations/" />
+  <Folder Name="/src/Migrations/Auth/">
+    <Project Path="src/Migrations/Auth/CM.TableNow.Auth.Migrations.csproj" />
+  </Folder>
+  <Folder Name="/src/Migrations/Reservations/">
+    <Project Path="src/Migrations/Reservations/CM.TableNow.Reservations.Migrations.csproj" />
+  </Folder>
+  <Folder Name="/src/Migrations/Restaurants/">
+    <Project Path="src/Migrations/Restaurants/CM.TableNow.Restaurants.Migrations.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/CM.TableNow.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/IntegrationTests/">
+    <Project Path="tests/IntegrationTests/CM.TableNow.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/tests/UnitTests/">
+    <Project Path="tests/UnitTests/CM.TableNow.UnitTests.csproj" />
+  </Folder>
+</Solution>
