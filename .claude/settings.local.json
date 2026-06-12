@@ -32,7 +32,15 @@
       "PowerShell(dotnet new web *)",
       "PowerShell(dotnet new classlib *)",
       "PowerShell(dotnet build *)",
-      "PowerShell(New-Item *)"
+      "PowerShell(New-Item *)",
+      "PowerShell(dotnet tool install --global dotnet-ef 2>&1)",
+      "PowerShell(dotnet ef --version)",
+      "Bash(npm run *)",
+      "PowerShell(node -e \"const p = require\\('C:/repositories/github/tablenow/client/node_modules/@analogjs/vite-plugin-angular/package.json'\\); console.log\\(p.version\\); console.log\\(Object.keys\\(p.exports || {}\\).join\\(', '\\)\\)\")",
+      "Bash(Get-ChildItem -Recurse \"client/src/app/core/services\")",
+      "Bash(Select-Object FullName)",
+      "Bash(npx tsc *)",
+      "Bash(npx *)"
     ]
   },
   "enableAllProjectMcpServers": true,

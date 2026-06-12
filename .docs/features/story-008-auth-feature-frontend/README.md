@@ -35,9 +35,9 @@ graph TD
 ## Task Status
 
 ### Phase 1
-- [ ] [task-01-auth-core-service](./tasks/task-01-auth-core-service.md) — AuthService with JWT storage and `isAuthenticated` signal
-- [ ] [task-02-register-page](./tasks/task-02-register-page.md) — RegisterComponent reactive form calling the auth API
-- [ ] [task-03-login-page](./tasks/task-03-login-page.md) — LoginComponent reactive form storing the JWT
+- [x] [task-01-auth-core-service](./tasks/task-01-auth-core-service.md) — AuthService with JWT storage and `isAuthenticated` signal
+- [x] [task-02-register-page](./tasks/task-02-register-page.md) — RegisterComponent reactive form calling the auth API
+- [x] [task-03-login-page](./tasks/task-03-login-page.md) — LoginComponent reactive form storing the JWT
 
 ### Phase 2
-- [ ] [task-04-auth-routes](./tasks/task-04-auth-routes.md) — Auth feature routes and barrel export
+- [x] [task-04-auth-routes](./tasks/task-04-auth-routes.md) — Auth feature routes and barrel export

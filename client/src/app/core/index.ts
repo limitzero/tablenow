@@ -1,1 +1,1 @@
-// barrel — populated by feature stories (auth service, interceptors, guards)
+export { AuthService } from './services/auth.service';
