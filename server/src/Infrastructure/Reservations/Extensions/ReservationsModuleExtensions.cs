@@ -1,3 +1,5 @@
+using CM.TableNow.Reservations.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +11,10 @@ public static class ReservationsModuleExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // TODO(STORY-014/016/017): register Reservations DbContext, handlers, concurrency services.
+        // TODO(STORY-014/016/017): register Reservations handlers and concurrency services.
+        services.AddDbContext<ReservationsDbContext>(options =>
+            options.UseSqlite(configuration.GetConnectionString("Default")));
+
         return services;
     }
 }
