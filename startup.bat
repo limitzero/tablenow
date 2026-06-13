@@ -1,14 +1,13 @@
-@echo off
+:: run the migrations first on the data contexts to seed the application with data
+dotnet ef database update --project YourDataProjectName --startup-project YourWebProjectName
 
-echo Running EF migrations...
-powershell -ExecutionPolicy Bypass -File "%~dp0migrate.ps1"
-if errorlevel 1 (
-    echo Migration failed. Aborting startup.
-    exit /b 1
-)
 
-start "TableNow - BackEnd" dotnet run --project server\src\Api\CM.TableNow.Api.csproj
+:: bring up the back-end components first
+start "TableNow - BackEnd" dotnet run --project .server\src\Api\CM.TableNow.Api.csproj
 
-pushd client
-ng serve
+
+pushd
+cd client & ng serve
 popd
+
+

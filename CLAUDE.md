@@ -6,8 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **TableNow** — a dual-sided restaurant reservation web app (OpenTable-like). Angular 21 frontend + .NET 10 backend. See `.docs/prd/PRD.md` for full product context and phased roadmap.
 
-> The project is currently in the design/planning phase. Source code does not yet exist. All authoritative architecture decisions live in `.docs/design/`.
-
 ---
 
 ## Backend (.NET 10)
@@ -151,3 +149,4 @@ Authoritative references for architecture decisions:
 | `.docs/design/backend/backend-naming-standards.md` | Naming rules + BDD test conventions |
 | `.docs/design/frontend/angular-standards.md` | Angular project conventions |
 | `.docs/prd/PRD.md` | Product requirements + 4-phase roadmap |
+| `.docs/adr/index.md` | Architecture Decision Records — binding decisions on patterns and trade-offs |
