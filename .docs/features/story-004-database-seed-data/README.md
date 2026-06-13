@@ -32,4 +32,4 @@ graph TD
 - [x] [task-01-seed-users-restaurants](./tasks/task-01-seed-users-restaurants.md) — Test users and restaurant seed data
 
 ### Phase 2
-- [ ] [task-02-seed-time-slots](./tasks/task-02-seed-time-slots.md) — Time slot generation for all restaurants
+- [x] [task-02-seed-time-slots](./tasks/task-02-seed-time-slots.md) — Time slot generation for all restaurants

@@ -25,5 +25,6 @@ public static class WebApplicationExtensions
 
         var restaurantsDb = services.GetRequiredService<RestaurantsDbContext>();
         await RestaurantDataSeeder.SeedAsync(restaurantsDb, cancellationToken);
+        await TimeSlotDataSeeder.SeedAsync(restaurantsDb, cancellationToken);
     }
 }
