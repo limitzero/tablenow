@@ -14,11 +14,8 @@ internal sealed class TimeSlotConfiguration : IEntityTypeConfiguration<TimeSlot>
         builder.Property(t => t.TotalCapacity).IsRequired();
         builder.Property(t => t.RemainingCapacity).IsRequired();
 
-        // Cross-provider concurrency token: IsConcurrencyToken works on both SQLite and SQL Server.
-        // SQL Server migrations can upgrade this to rowversion; for now both providers use ETag-style token.
         builder.Property(t => t.RowVersion)
-            .IsRowVersion()
-            .IsConcurrencyToken();
+            .IsRowVersion();
 
         builder.HasIndex(t => new { t.RestaurantId, t.StartTime });
     }
