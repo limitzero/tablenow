@@ -7,6 +7,8 @@ builder.Services.RegisterServices(builder.Configuration);
 
 var app = builder.Build();
 
+await app.SeedDatabaseAsync();
+
 var api = app.MapGroup("/api");
 api.MapRestaurantEndpoints();
 

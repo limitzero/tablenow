@@ -48,7 +48,17 @@
       "Bash(git -C C:/repositories/github/tablenow status)",
       "Bash(git -C C:/repositories/github/tablenow log -5 --oneline)",
       "Bash(git *)",
-      "Bash(dotnet build *)"
+      "Bash(dotnet build *)",
+      "Bash(Get-ChildItem \"C:\\\\repositories\\\\github\\\\tablenow\\\\.docs\\\\features\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(Sort-Object Name)",
+      "Bash(dotnet add *)",
+      "Bash(rm -f tablenow.dev.db)",
+      "Bash(timeout 35 dotnet run --no-build)",
+      "Bash(tasklist)",
+      "Bash(dotnet ef *)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 *)"
     ]
   },
   "enableAllProjectMcpServers": true,
