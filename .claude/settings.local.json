@@ -66,7 +66,9 @@
       "Bash(sed -i 's/- \\\\[ \\\\]/- [x]/g' /tmp/phase1-body.md /tmp/phase2-body.md)",
       "Bash(sed -i 's/- \\\\[ \\\\] #10/- [x] #10/; s/- \\\\[ \\\\] #11/- [x] #11/' /tmp/epic9-body.md)",
       "Bash(sed -i 's/- \\\\[ \\\\]/- [x]/g' /tmp/s8-phase1.md /tmp/s8-phase2.md)",
-      "Bash(sed -i 's/- \\\\[ \\\\] #22/- [x] #22/; s/- \\\\[ \\\\] #23/- [x] #23/' /tmp/epic21-body.md)"
+      "Bash(sed -i 's/- \\\\[ \\\\] #22/- [x] #22/; s/- \\\\[ \\\\] #23/- [x] #23/' /tmp/epic21-body.md)",
+      "Bash(dotnet test *)",
+      "Bash(cygpath -w /tmp/issue13-body.md)"
     ]
   },
   "enableAllProjectMcpServers": true,
