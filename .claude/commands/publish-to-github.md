@@ -265,7 +265,7 @@ After completion, report:
 
 Example output:
 
-```
+```markdown
 Feature "{Feature Title}" published to GitHub!
 
 Epic: https://github.com/{repository}/issues/{epic-number}
