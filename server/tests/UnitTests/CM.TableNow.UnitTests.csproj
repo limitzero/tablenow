@@ -28,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Application\Auth\CM.TableNow.Auth.Application.csproj" />
     <ProjectReference Include="..\..\src\Domain\Auth\CM.TableNow.Auth.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Data\Auth\CM.TableNow.Auth.Data.csproj" />
     <ProjectReference Include="..\..\src\Application\Restaurants\CM.TableNow.Restaurants.Application.csproj" />
     <ProjectReference Include="..\..\src\Domain\Restaurants\CM.TableNow.Restaurants.Domain.csproj" />
     <ProjectReference Include="..\..\src\Data\Restaurants\CM.TableNow.Restaurants.Data.csproj" />
