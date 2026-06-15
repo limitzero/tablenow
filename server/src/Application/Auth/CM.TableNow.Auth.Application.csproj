@@ -4,9 +4,11 @@
     <ProjectReference Include="..\..\Shared\CM.TableNow.Shared.csproj" />
     <ProjectReference Include="..\..\Domain\Auth\CM.TableNow.Auth.Domain.csproj" />
     <ProjectReference Include="..\..\Contracts\CM.TableNow.Contracts.csproj" />
+    <ProjectReference Include="..\..\Data\Auth\CM.TableNow.Auth.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="*" />
     <PackageReference Include="FluentValidation" Version="*" />
     <PackageReference Include="Mediator.Abstractions" Version="*" />
   </ItemGroup>
