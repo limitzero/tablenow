@@ -56,8 +56,6 @@ public static class TimeSlotDataSeeder
                         StartTime = new DateTimeOffset(date + SlotTimes[slotIndex], TimeSpan.Zero),
                         TotalCapacity = Capacities[slotIndex],
                         RemainingCapacity = Capacities[slotIndex],
-                        // Left empty so EF assigns the concurrency token on first save.
-                        RowVersion = [],
                     });
                 }
             }

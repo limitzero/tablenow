@@ -43,7 +43,7 @@ public class TimeSlot
 {
     public Guid Id { get; set; }
     // ...
-    public byte[] RowVersion { get; set; } = [];
+    public byte[]? RowVersion { get; set; }
 }
 ```
 
