@@ -10,6 +10,7 @@ var app = builder.Build();
 await app.SeedDatabaseAsync();
 
 var api = app.MapGroup("/api");
+api.MapAuthEndpoints();
 api.MapRestaurantEndpoints();
 
 app.Run();
