@@ -1,3 +1,4 @@
+using CM.TableNow.Auth.Application.Services;
 using CM.TableNow.Auth.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,7 @@ public static class AuthModuleExtensions
         IConfiguration configuration)
     {
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
-        services.AddSingleton<JwtTokenGenerator>();
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         services.AddDbContext<AuthDbContext>(options =>
             options.UseSqlite(configuration.GetConnectionString("Default")));

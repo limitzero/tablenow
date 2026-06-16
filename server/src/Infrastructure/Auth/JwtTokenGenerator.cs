@@ -1,3 +1,4 @@
+using CM.TableNow.Auth.Application.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -6,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CM.TableNow.Auth.Infrastructure;
 
-public sealed class JwtTokenGenerator(IOptions<JwtOptions> options)
+public sealed class JwtTokenGenerator(IOptions<JwtOptions> options) : IJwtTokenGenerator
 {
     private readonly JwtOptions _options = options.Value;
 
