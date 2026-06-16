@@ -17,6 +17,12 @@ public static class AuthEndpoints
             return TypedResultHelper.ToHttpResult(result);
         });
 
+        auth.MapPost("/login", async (LoginRequest body, IMediator mediator, CancellationToken ct) =>
+        {
+            var result = await mediator.Send(AuthMapper.ToLoginRequest(body), ct);
+            return TypedResultHelper.ToHttpResult(result);
+        });
+
         return group;
     }
 }
