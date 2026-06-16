@@ -11,9 +11,9 @@ public static class AuthModuleExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // AuthDbContext is registered here (SQLite, "Default" connection string) to match the
-        // Restaurants module. The data seeder resolves this context at startup.
-        // TODO(STORY-005/006): register Auth handlers, password hasher, and JWT service.
+        services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+        services.AddSingleton<JwtTokenGenerator>();
+
         services.AddDbContext<AuthDbContext>(options =>
             options.UseSqlite(configuration.GetConnectionString("Default")));
 
